@@ -99,7 +99,7 @@ A robust REST API to manage a task list, providing features for creating, updati
 
 ## TODO List:
 
-- [ ] Set up NestJS and create a home route returning API name and version.
+- [X] Set up NestJS and create a home route returning API name and version.
 - [ ] Configure MongoDB connection.
 - [ ] Create a health check route to monitor server and database connectivity.
 - [ ] Implement list (GET) route for tasks.
