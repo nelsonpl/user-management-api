@@ -109,7 +109,7 @@ A robust REST API to manage a task list, providing features for creating, updati
 - [X] Implement delete (DELETE) route for tasks.
 - [X] Set up Swagger/OpenAPI for documentation.
 - [X] Write unit tests for critical functionalities.
-- [ ] Configure Docker for containerized deployment.
+- [X] Configure Docker for containerized deployment.
 - [ ] Set up GitHub Actions for CI/CD.
 - [ ] Deploy the application to AWS EC2.
 

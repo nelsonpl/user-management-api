@@ -22,6 +22,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+      - /app/.dist
     command: npm run start:dev
 
 volumes:

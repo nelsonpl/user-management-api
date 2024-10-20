@@ -13,6 +13,7 @@ import { CreateTaskDto } from './dtos/createTask.dto';
 import { UpdateTaskDto } from './dtos/updateTask.dto';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Task } from './task.entity';
+import { FindAllQueryDto } from './dtos/find-all-query.dto';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -28,15 +29,7 @@ export class TasksController {
   @ApiParam({ name: 'dueDateEnd', description: 'Task due date end', required: false })
   @ApiParam({ name: 'page', description: 'Page number', required: false })
   @ApiParam({ name: 'limit', description: 'Number of items per page', required: false })
-  async getAllTasks(
-    @Query('search') search?: string,
-    @Query('status') status?: string,
-    @Query('priority') priority?: string,
-    @Query('dueDateStart') dueDateStart?: string,
-    @Query('dueDateEnd') dueDateEnd?: string,
-    @Query('page') page = 1,
-    @Query('limit') limit = 10,
-  ): Promise<{ data: Task[]; totalItems: number; currentPage: number }> {
+  async getAllTasks(@Query() {dueDateStart, dueDateEnd, search, status, priority, page, limit}: FindAllQueryDto): Promise<{ data: Task[]; totalItems: number; currentPage: number }> {
     const dueStartDate = dueDateStart ? new Date(dueDateStart) : undefined;
     const dueEndDate = dueDateEnd ? new Date(dueDateEnd) : undefined;
 
