@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Task, TaskDocument } from 'src/entities/task.entity';
+import { CreateTaskDto } from './dtos/createTask.dto';
 
 @Injectable()
 export class TasksService {
@@ -60,5 +61,10 @@ export class TasksService {
       throw new NotFoundException(`Task with ID "${id}" not found`);
     }
     return task;
+  }
+
+  async create(createTaskDto: CreateTaskDto): Promise<Task> {
+    const createdTask = new this.taskModel(createTaskDto);
+    return createdTask.save();
   }
 }
