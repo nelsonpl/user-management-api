@@ -105,7 +105,7 @@ A robust REST API to manage a task list, providing features for creating, updati
 - [X] Implement list (GET) route for tasks.
 - [X] Implement get-by-id (GET) route for tasks.
 - [X] Implement create (POST) route for tasks.
-- [ ] Implement update (PUT) route for tasks.
+- [X] Implement update (PUT) route for tasks.
 - [ ] Implement delete (DELETE) route for tasks.
 - [ ] Set up Swagger/OpenAPI for documentation.
 - [ ] Write unit tests for critical functionalities.
