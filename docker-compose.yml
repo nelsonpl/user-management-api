@@ -1,0 +1,28 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    volumes:
+      - mongo-data:/data/db
+
+  app:
+    build: .
+    container_name: nestjs-app
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongodb
+    environment:
+      MONGO_URI: mongodb://root:123456@mongodb:27017/todolist?authSource=admin
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run start:dev
+
+volumes:
+  mongo-data:
