@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task } from 'src/entities/task.entity';
 
@@ -28,5 +28,10 @@ export class TasksController {
       Number(page),
       Number(limit),
     );
+  }
+
+  @Get(':id')
+  async getTaskById(@Param('id') id: string): Promise<Task> {
+    return this.tasksService.findOneById(id);
   }
 }

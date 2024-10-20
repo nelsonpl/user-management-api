@@ -102,8 +102,8 @@ A robust REST API to manage a task list, providing features for creating, updati
 - [X] Set up NestJS and create a home route returning API name and version.
 - [X] Configure MongoDB connection.
 - [X] Create a health check route to monitor server and database connectivity.
-- [ ] Implement list (GET) route for tasks.
-- [ ] Implement get-by-id (GET) route for tasks.
+- [X] Implement list (GET) route for tasks.
+- [X] Implement get-by-id (GET) route for tasks.
 - [ ] Implement create (POST) route for tasks.
 - [ ] Implement update (PUT) route for tasks.
 - [ ] Implement delete (DELETE) route for tasks.
