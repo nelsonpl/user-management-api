@@ -9,10 +9,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { Task } from 'src/entities/task.entity';
 import { CreateTaskDto } from './dtos/createTask.dto';
 import { UpdateTaskDto } from './dtos/updateTask.dto';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Task } from './task.entity';
 
 @ApiTags('tasks')
 @Controller('tasks')
