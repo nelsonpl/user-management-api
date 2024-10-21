@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Task } from './task.entity';
 import { FindAllQueryDto } from './dtos/find-all-query.dto';
 import { TaskDto } from './dtos/task.dto';
@@ -21,24 +21,21 @@ export class TasksController {
 
   @Get()
   @ApiOperation({ summary: 'Get all tasks' })
-  @ApiParam({ name: 'search', description: 'Search query', required: false })
-  @ApiParam({ name: 'status', description: 'Task status', required: false })
-  @ApiParam({ name: 'priority', description: 'Task priority', required: false })
-  @ApiParam({ name: 'page', description: 'Page number', required: false })
-  @ApiParam({
-    name: 'limit',
-    description: 'Number of items per page',
-    required: false,
-  })
+  @ApiQuery({ name: 'search', description: 'Search query', required: false })
+  @ApiQuery({ name: 'status', description: 'Task status', required: false })
+  @ApiQuery({ name: 'priority', description: 'Task priority', required: false })
+  @ApiQuery({ name: 'page', description: 'Page number', required: false })
+  @ApiQuery({ name: 'limit', description: 'Number of items per page', required: false })
   async getAllTasks(
-    @Query() { search, status, priority, page, limit }: FindAllQueryDto,
+    @Query() query: FindAllQueryDto,
   ): Promise<{ data: Task[]; totalItems: number; currentPage: number }> {
+    const { search, status, priority, page, limit } = query;
     return this.tasksService.findAll(
       search,
       status,
       priority,
-      Number(page),
-      Number(limit),
+      page,
+      limit,
     );
   }
 
