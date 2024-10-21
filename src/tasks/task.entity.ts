@@ -17,8 +17,11 @@ export class Task {
   @Prop()
   dueDate: Date;
 
-  @Prop({ enum: ['pending', 'completed', 'archived'], default: 'pending' })
+  @Prop({ enum: ['pending', 'completed'], default: 'pending' })
   status: string;
+
+  @Prop({ default: false })
+  archived: boolean;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

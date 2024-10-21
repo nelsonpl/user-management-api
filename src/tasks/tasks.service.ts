@@ -77,4 +77,28 @@ export class TasksService {
     }
     return { message: `Task with ID "${id}" has been deleted` };
   }
+
+  async complete(id: string): Promise<{ message: string }> {
+    const task = await this.taskModel.findOneAndUpdate(
+      { _id: id, status: 'pending' },
+      { status: 'completed' },
+      { new: true },
+    );
+    if (!task) {
+      throw new NotFoundException(`Task with ID "${id}" not found`);
+    }
+    return { message: `Task with ID "${id}" has been completed` };
+  }
+
+  async archive(id: string): Promise<{ message: string }> {
+    const task = await this.taskModel.findOneAndUpdate(
+      { _id: id, archived: false },
+      { archived: true },
+      { new: true },
+    );
+    if (!task) {
+      throw new NotFoundException(`Task with ID "${id}" not found`);
+    }
+    return { message: `Task with ID "${id}" has been archived` };
+  }
 }

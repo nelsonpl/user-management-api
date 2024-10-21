@@ -62,6 +62,20 @@ export class TasksController {
     return this.tasksService.update(id, taskDto);
   }
 
+  @Put(':id/complete')
+  @ApiOperation({ summary: 'Complete a task by ID' })
+  @ApiParam({ name: 'id', description: 'Task ID' })
+  async completeTask(@Param('id') id: string): Promise<{ message: string }> {
+    return this.tasksService.complete(id);
+  }
+
+  @Put(':id/archive')
+  @ApiOperation({ summary: 'Archive a task by ID' })
+  @ApiParam({ name: 'id', description: 'Task ID' })
+  async archiveTask(@Param('id') id: string): Promise<{ message: string }> {
+    return this.tasksService.archive(id);
+  }
+
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a task by ID' })
   @ApiParam({ name: 'id', description: 'Task ID' })
