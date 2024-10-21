@@ -110,8 +110,6 @@ A robust REST API to manage a task list, providing features for creating, updati
 - [X] Set up Swagger/OpenAPI for documentation.
 - [X] Write unit tests for critical functionalities.
 - [X] Configure Docker for containerized deployment.
-- [ ] Set up GitHub Actions for CI/CD.
-- [ ] Deploy the application to AWS EC2.
 
 ## Installation and Setup:
 
@@ -146,12 +144,6 @@ A robust REST API to manage a task list, providing features for creating, updati
     
     ```bash
     npm run test
-    ```
-    
-- Run integration tests:
-    
-    ```bash
-    npm run test:e2e
     ```
 
 ---

@@ -22,14 +22,6 @@ export class FindAllQueryDto {
   priority?: string;
 
   @IsOptional()
-  @IsString()
-  dueDateStart?: string;
-
-  @IsOptional()
-  @IsString()
-  dueDateEnd?: string;
-
-  @IsOptional()
   @IsNumber()
   @Min(1)
   page = 1;

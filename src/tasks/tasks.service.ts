@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateTaskDto } from './dtos/createTask.dto';
-import { UpdateTaskDto } from './dtos/updateTask.dto';
 import { Task, TaskDocument } from './task.entity';
+import { TaskDto } from './dtos/task.dto';
 
 @Injectable()
 export class TasksService {
@@ -13,8 +12,6 @@ export class TasksService {
     search?: string,
     status?: string,
     priority?: string,
-    dueDateStart?: Date,
-    dueDateEnd?: Date,
     page = 1,
     limit = 10,
   ): Promise<{ data: Task[]; totalItems: number; currentPage: number }> {
@@ -33,12 +30,6 @@ export class TasksService {
 
     if (priority) {
       filters.priority = priority;
-    }
-
-    if (dueDateStart || dueDateEnd) {
-      filters.dueDate = {};
-      if (dueDateStart) filters.dueDate.$gte = dueDateStart;
-      if (dueDateEnd) filters.dueDate.$lte = dueDateEnd;
     }
 
     const skip = (page - 1) * limit;
@@ -64,13 +55,15 @@ export class TasksService {
     return task;
   }
 
-  async create(createTaskDto: CreateTaskDto): Promise<Task> {
-    const createdTask = this.taskModel.create(createTaskDto);
+  async create(taskDto: TaskDto): Promise<Task> {
+    const createdTask = this.taskModel.create(taskDto);
     return createdTask;
   }
 
-  async update(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
-    const updatedTask = await this.taskModel.findByIdAndUpdate(id, updateTaskDto, { new: true }).exec();
+  async update(id: string, taskDto: TaskDto): Promise<Task> {
+    const updatedTask = await this.taskModel
+      .findByIdAndUpdate(id, taskDto, { new: true })
+      .exec();
     if (!updatedTask) {
       throw new NotFoundException(`Task with ID "${id}" not found`);
     }

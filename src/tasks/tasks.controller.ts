@@ -9,11 +9,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { CreateTaskDto } from './dtos/createTask.dto';
-import { UpdateTaskDto } from './dtos/updateTask.dto';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Task } from './task.entity';
 import { FindAllQueryDto } from './dtos/find-all-query.dto';
+import { TaskDto } from './dtos/task.dto';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -25,20 +24,19 @@ export class TasksController {
   @ApiParam({ name: 'search', description: 'Search query', required: false })
   @ApiParam({ name: 'status', description: 'Task status', required: false })
   @ApiParam({ name: 'priority', description: 'Task priority', required: false })
-  @ApiParam({ name: 'dueDateStart', description: 'Task due date start', required: false })
-  @ApiParam({ name: 'dueDateEnd', description: 'Task due date end', required: false })
   @ApiParam({ name: 'page', description: 'Page number', required: false })
-  @ApiParam({ name: 'limit', description: 'Number of items per page', required: false })
-  async getAllTasks(@Query() {dueDateStart, dueDateEnd, search, status, priority, page, limit}: FindAllQueryDto): Promise<{ data: Task[]; totalItems: number; currentPage: number }> {
-    const dueStartDate = dueDateStart ? new Date(dueDateStart) : undefined;
-    const dueEndDate = dueDateEnd ? new Date(dueDateEnd) : undefined;
-
+  @ApiParam({
+    name: 'limit',
+    description: 'Number of items per page',
+    required: false,
+  })
+  async getAllTasks(
+    @Query() { search, status, priority, page, limit }: FindAllQueryDto,
+  ): Promise<{ data: Task[]; totalItems: number; currentPage: number }> {
     return this.tasksService.findAll(
       search,
       status,
       priority,
-      dueStartDate,
-      dueEndDate,
       Number(page),
       Number(limit),
     );
@@ -53,8 +51,8 @@ export class TasksController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new task' })
-  async createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
-    return this.tasksService.create(createTaskDto);
+  async createTask(@Body() taskDto: TaskDto): Promise<Task> {
+    return this.tasksService.create(taskDto);
   }
 
   @Put(':id')
@@ -62,9 +60,9 @@ export class TasksController {
   @ApiParam({ name: 'id', description: 'Task ID' })
   async updateTask(
     @Param('id') id: string,
-    @Body() updateTaskDto: UpdateTaskDto,
+    @Body() taskDto: TaskDto,
   ): Promise<Task> {
-    return this.tasksService.update(id, updateTaskDto);
+    return this.tasksService.update(id, taskDto);
   }
 
   @Delete(':id')
