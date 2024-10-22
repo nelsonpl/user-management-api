@@ -125,14 +125,20 @@ A robust REST API to manage a task list, providing features for creating, updati
     cd todolist-nestjs
     npm install
     ```
+        
+3. Set MONGO_URI on .env:
     
-3. Run the application locally:
+    ```bash
+    MONGO_URI=
+    ```
+
+4. Run the application locally:
     
     ```bash
     npm run start
     ```
     
-4. For Docker setup:
+For Docker setup:
     
     ```bash
     docker-compose up --build
