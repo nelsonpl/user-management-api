@@ -1,29 +1,39 @@
 services:
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - '27017:27017'
+      - "3000:3000"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: 123456
-    volumes:
-      - mongo-data:/data/db
-
-  app:
-    build: .
-    container_name: nestjs-app
-    ports:
-      - '3000:3000'
+      - DATABASE_HOST=db
+      - DATABASE_PORT=33061
+      - DATABASE_USER=user
+      - DATABASE_PASSWORD=password
+      - DATABASE_NAME=userdb
+      - JWT_SECRET=your-secret-key
     depends_on:
-      - mongodb
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "33061:3306"
     environment:
-      MONGO_URI: mongodb://root:123456@mongodb:27017/todolist?authSource=admin
+      - MYSQL_DATABASE=userdb
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=rootpassword
     volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/.dist
-    command: npm run start:dev
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
 
 volumes:
-  mongo-data:
+  mysql-data:
+
+networks:
+  app-network:
+    driver: bridge

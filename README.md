@@ -1,155 +1,99 @@
-# TodoList API - NestJS
+# User Management API
 
-A robust REST API to manage a task list, providing features for creating, updating, completing, archiving, and deleting tasks. This project demonstrates full-stack development capabilities using NestJS and MongoDB.
+Uma API RESTful para gerenciamento de usuários construída com NestJS, MySQL e Docker.
 
-## Technologies Used:
+## Requisitos
 
-- **Node.js**: JavaScript runtime for building the API.
-- **NestJS**: Framework for building efficient and scalable server-side applications.
-- **MongoDB**: NoSQL database for storing tasks.
-- **Swagger / OpenAPI**: For API documentation and testing.
-- **Docker**: For containerizing the application.
-- **Unit/Integration Testing**: To ensure the correctness of functionality.
-- **Logging Library**: To track application logs.
-- **GitHub Actions**: For CI/CD pipeline automation.
-- **AWS EC2**: For deployment of the API.
+- Docker
+- Docker Compose
+- Node.js 18+
+- npm
 
-## API Routes:
+## Configuração do Ambiente
 
-### 1. Get All Tasks
+1. Clone o repositório:
+```bash
+git clone [URL_DO_REPOSITORIO]
+cd [NOME_DO_PROJETO]
+```
 
-- **Endpoint**: `GET /api/todo`
-- **Query Params** (optional):
-  - `search`: Filter tasks by title and description.
-  - `start`: Filter tasks by start date.
-  - `end`: Filter tasks by end date.
-  - `priority`: Filter tasks by priority.
-  - `orderBy`: Attribute to order by (e.g., `title`, `dueDate`).
-  - `orderDirection`: Sort direction (`asc` or `desc`).
-  - `page`: Pagination page number.
-  - `limit`: Number of tasks per page.
-- **Response**:
-    
-    ```json
-    {
-      "data": [{ 
-        "id": 1,
-        "title": "Task title",
-        "description": "Task description",
-        "priority": "Task priority",
-        "dueDate": "Task due date",
-        "status": "opened"
-      }],
-      "meta": {
-        "totalItems": 0,
-        "currentPage": 0
-      }
-    }
-    ```
+2. Crie um arquivo `.env` na raiz do projeto:
+```
+DATABASE_HOST=db
+DATABASE_PORT=3306
+DATABASE_USER=user
+DATABASE_PASSWORD=password
+DATABASE_NAME=userdb
+JWT_SECRET=your-secret-key
+```
 
-### 2. Get Task by ID
+3. Inicie os containers Docker:
+```bash
+docker-compose up -d
+```
 
-- **Endpoint**: `GET /api/todo/{id}`
-- **Response**: Returns the task JSON by ID.
+## Executando os Testes
 
-### 3. Create a Task
+```bash
+# Testes unitários
+npm run test
 
-- **Endpoint**: `POST /api/todo`
-- **Payload**:
-    
-    ```json
-    {
-      "title": "Task title",
-      "description": "Task description",
-      "priority": "Task priority",
-      "dueDate": "Task due date"
-    }
-    ```
-- **Response**: Returns the created task JSON.
+# Testes e2e
+npm run test:e2e
 
-### 4. Update a Task
+# Cobertura de testes
+npm run test:cov
+```
 
-- **Endpoint**: `PUT /api/todo/{id}`
-- **Payload**:
-    
-    ```json
-    {
-      "title": "Updated title",
-      "description": "Updated description",
-      "priority": "Updated priority",
-      "dueDate": "Updated due date"
-    }
-    ```
-- **Response**: Returns the updated task JSON.
+## Documentação da API
 
-### 5. Complete a Task
+Após iniciar a aplicação, acesse a documentação Swagger em:
+```
+http://localhost:3000/api
+```
 
-- **Endpoint**: `PUT /api/todo/{id}/completed`
-- **Response**: Returns the updated task JSON with completion status.
+## Endpoints
 
-### 6. Archive a Task
+### Autenticação
+- POST /auth/login - Login de usuário
+- POST /auth/register - Registro de novo usuário
 
-- **Endpoint**: `PUT /api/todo/{id}/archive`
-- **Response**: Returns the updated task JSON with archive status.
+### Usuários
+- GET /users - Lista todos os usuários
+- GET /users/:id - Obtém um usuário específico
+- POST /users - Cria um novo usuário
+- PATCH /users/:id - Atualiza um usuário
+- DELETE /users/:id - Remove um usuário (soft delete)
 
-### 7. Delete a Task
+## Estrutura do Projeto
 
-- **Endpoint**: `DELETE /api/todo/{id}`
-- **Response**: Returns HTTP status indicating successful deletion.
+```
+src/
+├── auth/               # Módulo de autenticação
+├── users/              # Módulo de usuários
+│   ├── dto/            # Data Transfer Objects
+│   ├── entities/       # Entidades do TypeORM
+│   ├── users.controller.ts
+│   ├── users.service.ts
+│   └── users.module.ts
+├── app.module.ts       # Módulo principal
+└── main.ts             # Ponto de entrada da aplicação
+```
 
-## TODO List:
+## Padrões e Práticas
 
-- [X] Set up NestJS and create a home route returning API name and version.
-- [X] Configure MongoDB connection.
-- [X] Create a health check route to monitor server and database connectivity.
-- [X] Implement list (GET) route for tasks.
-- [X] Implement get-by-id (GET) route for tasks.
-- [X] Implement create (POST) route for tasks.
-- [X] Implement update (PUT) route for tasks.
-- [X] Implement delete (DELETE) route for tasks.
-- [X] Set up Swagger/OpenAPI for documentation.
-- [X] Write unit tests for critical functionalities.
-- [X] Configure Docker for containerized deployment.
+- RESTful API
+- JWT para autenticação
+- TypeORM para persistência
+- Swagger para documentação
+- Testes automatizados
+- Docker para containerização
+- Princípios SOLID
 
-## Installation and Setup:
+## Decisões Técnicas
 
-1. Clone the repository:
-    
-    ```bash
-    git clone https://github.com/your-repo/todolist-nestjs.git
-    ```
-    
-2. Install dependencies:
-    
-    ```bash
-    cd todolist-nestjs
-    npm install
-    ```
-        
-3. Set MONGO_URI on .env:
-    
-    ```bash
-    MONGO_URI=
-    ```
-
-4. Run the application locally:
-    
-    ```bash
-    npm run start
-    ```
-    
-For Docker setup:
-    
-    ```bash
-    docker-compose up --build
-    ```
-
-## Testing:
-
-- Run unit tests:
-    
-    ```bash
-    npm run test
-    ```
-
----
+1. **Soft Delete**: Implementado através do campo `status` para manter histórico.
+2. **Auditoria**: Campos de criação, atualização e remoção com timestamps e usuários.
+3. **Validação**: Uso de class-validator para validação de DTOs.
+4. **Documentação**: Swagger integrado para documentação interativa.
+5. **Segurança**: JWT para autenticação e autorização.
